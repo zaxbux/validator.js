@@ -5,7 +5,18 @@ import isByteLength from './isByteLength';
 import isFQDN from './isFQDN';
 import isIP from './isIP';
 
-const default_email_options = {
+interface EmailOptions {
+  allow_display_name?: boolean
+  require_display_name?: boolean
+  allow_utf8_local_part?: boolean
+  require_tld?: boolean
+  blacklisted_chars?: string
+  ignore_max_length?: boolean
+  domain_specific_validation?: boolean
+  allow_ip_domain?: boolean
+}
+
+const default_email_options: EmailOptions = {
   allow_display_name: false,
   require_display_name: false,
   allow_utf8_local_part: true,
@@ -28,9 +39,9 @@ const defaultMaxEmailLength = 254;
 
 /**
  * Validate display name according to the RFC2822: https://tools.ietf.org/html/rfc2822#appendix-A.1.2
- * @param {String} display_name
+ * @param display_name
  */
-function validateDisplayName(display_name) {
+function validateDisplayName(display_name: string) {
   const display_name_without_quotes = display_name.replace(/^"(.+)"$/, '$1');
   // display name with only spaces is not valid
   if (!display_name_without_quotes.trim()) {
@@ -58,7 +69,7 @@ function validateDisplayName(display_name) {
 }
 
 
-export default function isEmail(str, options) {
+export default function isEmail(str: string, options: EmailOptions) {
   assertString(str);
   options = merge(options, default_email_options);
 
@@ -94,7 +105,7 @@ export default function isEmail(str, options) {
   const domain = parts.pop();
   let user = parts.join('@');
 
-  const lower_domain = domain.toLowerCase();
+  const lower_domain = domain?.toLowerCase();
 
   if (options.domain_specific_validation && (lower_domain === 'gmail.com' || lower_domain === 'googlemail.com')) {
     /*
@@ -135,11 +146,11 @@ export default function isEmail(str, options) {
     }
 
     if (!isIP(domain)) {
-      if (!domain.startsWith('[') || !domain.endsWith(']')) {
+      if (!domain?.startsWith('[') || !domain?.endsWith(']')) {
         return false;
       }
 
-      let noBracketdomain = domain.substr(1, domain.length - 2);
+      let noBracketdomain = domain?.substr(1, domain.length - 2);
 
       if (noBracketdomain.length === 0 || !isIP(noBracketdomain)) {
         return false;
