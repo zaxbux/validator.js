@@ -1,15 +1,22 @@
 import assertString from './util/assertString';
 import merge from './util/merge';
 
-const default_fqdn_options = {
+interface FQDNOptions {
+  require_tld?: boolean
+  allow_underscores?: boolean
+  allow_trailing_dot?: boolean
+  allow_numeric_tld?: boolean
+}
+
+const default_fqdn_options: FQDNOptions = {
   require_tld: true,
   allow_underscores: false,
   allow_trailing_dot: false,
   allow_numeric_tld: false,
 };
 
-export default function isFQDN(str, options) {
-  assertString(str);
+export default function isFQDN(str: string | undefined, options: FQDNOptions): boolean {
+  if (!str || !assertString(str)) return false;
   options = merge(options, default_fqdn_options);
 
   /* Remove the optional trailing dot before checking validity */

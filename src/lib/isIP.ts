@@ -44,18 +44,18 @@ const IPv6AddressRegExp = new RegExp('^(' +
   `(?::((?::${IPv6SegmentFormat}){0,5}:${IPv4AddressFormat}|(?::${IPv6SegmentFormat}){1,7}|:))` +
   ')(%[0-9a-zA-Z-.:]{1,})?$');
 
-export default function isIP(str, version = '') {
-  assertString(str);
+export default function isIP(str: string | undefined, version = ''): boolean {
+  if (!str || !assertString(str)) return false;
   version = String(version);
   if (!version) {
-    return isIP(str, 4) || isIP(str, 6);
+    return isIP(str, '4') || isIP(str, '6');
   }
   if (version === '4') {
     if (!IPv4AddressRegExp.test(str)) {
       return false;
     }
-    const parts = str.split('.').sort((a, b) => a - b);
-    return parts[3] <= 255;
+    const parts = str.split('.').sort((a, b) => Number.parseInt(a) - Number.parseInt(b));
+    return Number.parseInt(parts[3]) <= 255;
   }
   if (version === '6') {
     return !!IPv6AddressRegExp.test(str);
