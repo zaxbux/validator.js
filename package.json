@@ -48,7 +48,8 @@
     "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.47.0",
-    "tsc": "^1.20150623.0",
+    "tsc": "^2.0.3",
+    "typescript": "^4.2.4",
     "uglify-js": "^3.13.5"
   },
   "scripts": {
@@ -63,7 +64,7 @@
     "build:es": "babel src -d es --env-name=es",
     "build:node": "babel es -d .",
     "build:ts": "tsc",
-    "build": "npm run build:browser && npm run build:node && npm run build:es",
+    "build": "rpm run build:ts && npm run build:browser && npm run build:node && npm run build:es",
     "pretest": "npm run build && npm run lint",
     "test": "nyc mocha --require @babel/register --reporter dot",
     "test:ci": "nyc report --reporter=text-lcov",
