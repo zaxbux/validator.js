@@ -64,7 +64,7 @@
     "build:es": "babel src -d es --env-name=es",
     "build:node": "babel es -d .",
     "build:ts": "tsc",
-    "build": "rpm run build:ts && npm run build:browser && npm run build:node && npm run build:es",
+    "build": "npm run build:ts && npm run build:browser && npm run build:node && npm run build:es",
     "pretest": "npm run build && npm run lint",
     "test": "nyc mocha --require @babel/register --reporter dot",
     "test:ci": "nyc report --reporter=text-lcov",
